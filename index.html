@@ -1106,10 +1106,10 @@ parts.forEach(function(p){if(!p||p==='.')return;if(p==='..')o.pop();else o.push(
 function previewDoc(){var files=FS.files();
 var html=files.filter(function(f){return /(^|\/)index\.html$/.test(f);})[0]||files.filter(function(f){return /\.html?$/.test(f);})[0];
 if(!html)return null;var dir=html.indexOf('/')>=0?html.slice(0,html.lastIndexOf('/')):'',doc=FS.read(html);
-doc=doc.replace(/<link[^>]*href=["']([^"']+)["'][^>]*>/gi,function(m,h){var p=resolve(dir,h),n=p&&FS.get(p);
-return n&&n.type==='file'?'<script>\n'+n.content.replace(new RegExp('</scr'+'ipt>','gi'),'<'+'/script>')+'\n<'+'/script>':m;});
-doc=doc.replace(/<script[^>]*src=["']([^"']+)["'][^>]*>\s*<\/script>/gi,function(m,s){var p=resolve(dir,s),n=p&&FS.get(p);
-return n&&n.type==='file'?'<script>\\n'+n.content.replace(/<\/script>/gi,'<\\\\/script>')+'\\n<\\/script>':m;});
+  doc=doc.replace(/<link[^>]*href=["']([^"']+)["'][^>]*>/gi,function(m,h){var p=resolve(dir,h),n=p&&FS.get(p);
+  return n&&n.type==='file'?'<style>\n'+n.content+'\n</style>':m;});
+  doc=doc.replace(/<script[^>]*src=["']([^"']+)["'][^>]*>\s*<\/script>/gi,function(m,s){var p=resolve(dir,s),n=p&&FS.get(p);
+  return n&&n.type==='file'?'<script>\n'+n.content.replace(new RegExp('</scr'+'ipt>','gi'),'<'+'/script>')+'\n<'+'/script>':m;});
 return doc;}
 function refreshPreview(){var d=previewDoc(),f=$('#pvf');
 if(!d){f.srcdoc='<!DOCTYPE html><html lang="ru"><head><meta charset="UTF-8"><style>body{font-family:system-ui;display:grid;place-items:center;height:100vh;margin:0;background:#f7f5fc;color:#6b6478;text-align:center;padding:20px}</style></head><body><div><h2 style="color:#17102b">Нет HTML-файла</h2><p>Создай index.html, чтобы увидеть живое превью.</p></div></body></html>';return;}
@@ -1139,7 +1139,7 @@ clog('Нативный запуск '+L.n+' — через мост C++. Зде�
 computeProblems();toast('Для '+L.n+' показан анализ','warn');}}
 /* ============ search ============ */
 function searchAll(q,cs){if(!q)return[];var out=[],needle=cs?q:q.toLowerCase();
-FS.files().forEach(function(p){var lines=FS.read(p).split('\\n'),hits=[];
+FS.files().forEach(function(p){var lines=FS.read(p).split('\n'),hits=[];
 lines.forEach(function(l,i){var hay=cs?l:l.toLowerCase();if(hay.indexOf(needle)>=0)hits.push({line:i+1,text:l});});
 if(hits.length)out.push({path:p,hits:hits.slice(0,14),total:hits.length});});return out;}
 function renderFind(){
