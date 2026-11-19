@@ -1050,7 +1050,7 @@ if(dir&&(dir===src||dir.indexOf(src+'/')===0)){toast('Нельзя внутрь 
 if(FS.get(target)){toast('Цель существует','err');snd('err');return;}
 FS.snap();var r=FS.rename(src,target);if(r!==OK){FS.undo();toast('Ошибка перемещения','err');snd('err');return;}
 remap(src,target);clog('move '+src+' → '+target,'ok');snd('ok');after();}
-function newFile(dir){var f=LANGS.filter(function(x){return x.id===S.lang;});var ext=(f.length?f[0]:LANGS[0]).ext;ask('Новый файл'+(dir?' в '+dir:''),(dir?dir+'/new':'src/new')+ext,function(v){if(!v)return'Введите путь';if(FS.get(v))return'Уже существует';return null;},function(v){
+function newFile(dir){ask('Новый файл'+(dir?' в '+dir:''),dir?dir+'/new.js':'src/new.js',function(v){if(!v)return'Введите путь';if(FS.get(v))return'Уже существует';return null;},function(v){
 FS.snap();var r=FS.write(v,'',true);if(r===OK){openFile(v);clog('create_file '+v,'ok');snd('ok');after();logAct('edit','Создан файл '+v,'info');}else{FS.undo();toast('Ошибка','err');}});}
 function newDir(){ask('Новая папка','docs',function(v){if(!v)return'Введите путь';if(FS.get(v))return'Уже существует';return null;},function(v){
 FS.snap();var r=FS.mkdir(v,true);if(r===OK){S.open[v]=true;clog('create_folder '+v,'ok');snd('ok');after();}else{FS.undo();toast('Ошибка','err');}});}
@@ -1107,9 +1107,9 @@ function previewDoc(){var files=FS.files();
 var html=files.filter(function(f){return /(^|\/)index\.html$/.test(f);})[0]||files.filter(function(f){return /\.html?$/.test(f);})[0];
 if(!html)return null;var dir=html.indexOf('/')>=0?html.slice(0,html.lastIndexOf('/')):'',doc=FS.read(html);
 doc=doc.replace(/<link[^>]*href=["']([^"']+)["'][^>]*>/gi,function(m,h){var p=resolve(dir,h),n=p&&FS.get(p);
-return n&&n.type==='file'?'<style>\n'+n.content+'\n</style>':m;});
+return n&&n.type==='file'?'<script>\n'+n.content.replace(new RegExp('</scr'+'ipt>','gi'),'<'+'/script>')+'\n<'+'/script>':m;});
 doc=doc.replace(/<script[^>]*src=["']([^"']+)["'][^>]*>\s*<\/script>/gi,function(m,s){var p=resolve(dir,s),n=p&&FS.get(p);
-return n&&n.type==='file'?'<script>\n'+n.content.replace(/<\/script>/gi,'<'+'/script>')+'\n<'+'/script>':m;});
+return n&&n.type==='file'?'<script>\\n'+n.content.replace(/<\/script>/gi,'<\\\\/script>')+'\\n<\\/script>':m;});
 return doc;}
 function refreshPreview(){var d=previewDoc(),f=$('#pvf');
 if(!d){f.srcdoc='<!DOCTYPE html><html lang="ru"><head><meta charset="UTF-8"><style>body{font-family:system-ui;display:grid;place-items:center;height:100vh;margin:0;background:#f7f5fc;color:#6b6478;text-align:center;padding:20px}</style></head><body><div><h2 style="color:#17102b">Нет HTML-файла</h2><p>Создай index.html, чтобы увидеть живое превью.</p></div></body></html>';return;}
