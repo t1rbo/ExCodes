@@ -10,7 +10,7 @@
 [![Architecture](https://shields.io)](#)
 [![License: MIT](https://shields.io)](LICENSE)
 
-[**🚀 Open Live App (`t1rbo.github.io/ExCodes`)**](https://github.io)
+[**🚀 Open Live App (`https://t1rbo.github.io/ExCodes/`)**](https://github.io)
 
 </div>
 
