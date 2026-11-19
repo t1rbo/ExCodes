@@ -1050,7 +1050,7 @@ if(dir&&(dir===src||dir.indexOf(src+'/')===0)){toast('Нельзя внутрь 
 if(FS.get(target)){toast('Цель существует','err');snd('err');return;}
 FS.snap();var r=FS.rename(src,target);if(r!==OK){FS.undo();toast('Ошибка перемещения','err');snd('err');return;}
 remap(src,target);clog('move '+src+' → '+target,'ok');snd('ok');after();}
-function newFile(dir){var f=LANGS.filter(function(x){return x.id===S.lang;});var ext=(f.length?f:LANGS).ext;ask('Новый файл'+(dir?' в '+dir:''),(dir?dir+'/new':'src/new')+ext,
+function newFile(dir){var f=LANGS.filter(function(x){return x.id===S.lang;});var ext=(f.length?f[0]:LANGS[0]).ext;ask('Новый файл'+(dir?' в '+dir:''),(dir?dir+'/new':'src/new')+ext,
 FS.snap();var r=FS.write(v,'',true);if(r===OK){openFile(v);clog('create_file '+v,'ok');snd('ok');after();logAct('edit','Создан файл '+v,'info');}else{FS.undo();toast('Ошибка','err');}});}
 function newDir(){ask('Новая папка','docs',function(v){if(!v)return'Введите путь';if(FS.get(v))return'Уже существует';return null;},function(v){
 FS.snap();var r=FS.mkdir(v,true);if(r===OK){S.open[v]=true;clog('create_folder '+v,'ok');snd('ok');after();}else{FS.undo();toast('Ошибка','err');}});}
