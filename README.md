@@ -8,7 +8,7 @@
 [![Version](https://shields.io)](#)
 [![License: MIT](https://shields.io)](LICENSE)
 
-[**🚀 Open Live App (`t1rbo.github.io/ExCodes`)**](https://github.io)
+[**🚀 Открыть ExCodes Live (`t1rbo.github.io/ExCodes`)**](https://t1rbo.github.io)
 
 </div>
 
